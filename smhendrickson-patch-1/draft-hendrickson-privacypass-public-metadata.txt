@@ -4,12 +4,12 @@
 
 Privacy Pass                                              S. Hendrickson
 Internet-Draft                                                    Google
-Intended status: Informational                             15 March 2023
-Expires: 16 September 2023
+Intended status: Informational                               9 June 2023
+Expires: 11 December 2023
 
 
                         Public Metadata Issuance
-     draft-hendrickson-privacypass-public-metadata-issuance-latest
+          draft-hendrickson-privacypass-public-metadata-latest
 
 Abstract
 
@@ -22,10 +22,10 @@ About This Document
 
    The latest revision of this draft can be found at
    https://smhendrickson.github.io/draft-hendrickson-privacypass-public-
-   metadata-issuance/draft-hendrickson-privacypass-public-metadata-
-   issuance.html.  Status information for this document may be found at
+   metadata-issuance/draft-hendrickson-privacypass-public-metadata.html.
+   Status information for this document may be found at
    https://datatracker.ietf.org/doc/draft-hendrickson-privacypass-
-   public-metadata-issuance/.
+   public-metadata/.
 
    Discussion of this document takes place on the Privacy Pass Working
    Group mailing list (mailto:privacy-pass@ietf.org), which is archived
@@ -51,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 16 September 2023.
+   This Internet-Draft will expire on 11 December 2023.
 
 Copyright Notice
 
@@ -70,19 +70,21 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-   2.  Terminology
-   3.  Notation
-   4.  Issuance Protocol for Publicly Verifiable Tokens
-     4.1.  Client-to-Issuer Request
-     4.2.  Issuer-to-Client Response
-     4.3.  Finalization
-     4.4.  Token Verification
-     4.5.  Issuer Configuration
-   5.  Security Considerations
-   6.  IANA Considerations
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   2.  Motivation
+     2.1.  Alternatives
+   3.  Terminology
+   4.  Notation
+   5.  Issuance Protocol for Publicly Verifiable Tokens
+     5.1.  Client-to-Issuer Request
+     5.2.  Issuer-to-Client Response
+     5.3.  Finalization
+     5.4.  Token Verification
+     5.5.  Issuer Configuration
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -93,7 +95,52 @@ Table of Contents
    allows deployments to encode a small amount of information visible to
    all parties participating in the protocol.
 
-2.  Terminology
+2.  Motivation
+
+   Public metadata enables Privacy Pass deployments that share
+   information between clients, attesters, issuers and origins.  In a
+   0x01 (VOPRF) or 0x02 (Blind RSA) deployment, the only information
+   available to all parties is the issuer_name.  If one wants to
+   differentiate bits of information at the origin, many TokenChallenges
+   must be sent - one for each issuer_name that attests to the bit
+   required.
+
+   For example, if a deployment was built that attested to an app’s
+   published state in an app store, it requires 1 bit {published,
+   not_published} and can be built with a single issuer.  To build an
+   app version attester, we need one issuer_name for each app version,
+   and one challenge per version the origin needs to differentiate on
+   each origin load.  For each new app version that requires attesting,
+   a new issuer_name must be deployed.  If we build this system with
+   public metadata a single TokenChallenge for a single issuer_name can
+   be used.  Deployment specific logic could allow adding a new app
+   version into the metadata once sufficient users are on the new
+   version, ensuring users are private when providing attested metadata
+   bits to the origins.
+
+2.1.  Alternatives
+
+   To implement this scheme without new cryptographic primitives, one
+   could deploy an issuer signing key per metadata value, and publish
+   each key’s bit assignment in Issuer Configuration.  This many-key
+   metadata deployment should provide metadata visible to all parties in
+   the same way as the [PBLINDRSA] proposal outlined here, however it
+   has reliability and scalability tradeoffs.  Imagine a Privacy Pass
+   deployment using a client cached redemption context where max-age
+   cannot be used to expire signed tokens due to the cache, yet the
+   deployment requires fast token expiration.  Handling this requires
+   either deploying one key per expiration period or rotating keys
+   quickly.  Many simultaneous deployed keys could be difficult to scale
+   - for example some HSM implementations have fixed per-key costs, slow
+   key generation, and minimum key lifetimes.  Quick key rotation
+   creates reliability risk to the system, as a pause or slowdown in key
+   rotation could cause the system to run out of active signing or
+   verification keys.  [PBLINDRSA] allows deployments to change metadata
+   sets without publishing new keys, and challenge expiry can be encoded
+   within metadata.  It pushes all metadata design into the deployment
+   domain, instead of defining them in issuer configuration.
+
+3.  Terminology
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -107,13 +154,12 @@ Table of Contents
       Attester, Issuer, and Origin, and cryptographically bound to a
       token.
 
-3.  Notation
+4.  Notation
 
    The following terms are used throughout this document to describe the
    protocol operations in this document:
 
-   *  len(s): the length of a byte string, in bytes, represented as a
-      uint16_t
+   *  len(s): the length of a byte string, in bytes.
 
    *  concat(x0, ..., xN): Concatenation of byte strings.  For example,
       concat(0x01, 0x0203, 0x040506) = 0x010203040506
@@ -123,7 +169,7 @@ Table of Contents
       of [RFC8017].  Note that these functions operate on byte strings
       in big-endian byte order.
 
-4.  Issuance Protocol for Publicly Verifiable Tokens
+5.  Issuance Protocol for Publicly Verifiable Tokens
 
    This section describes a variant of the issuance protocol in
    Section 6 of [PROTOCOL] for producing publicly verifiable tokens
@@ -159,7 +205,7 @@ Table of Contents
       Issuer.
 
    *  Issuer Public Key: pkI, with a key identifier token_key_id
-      computed as described in Section 4.5.
+      computed as described in Section 5.5.
 
    *  Challenge value: challenge, an opaque byte string.  For example,
       this might be provided by the redemption protocol in [AUTHSCHEME].
@@ -171,7 +217,7 @@ Table of Contents
    in this protocol are described below.  The constant Nk is defined as
    256 for token type 0xDA7A.
 
-4.1.  Client-to-Issuer Request
+5.1.  Client-to-Issuer Request
 
    The Client first creates an issuance request message for a random
    value nonce using the input challenge and Issuer key identifier as
@@ -180,8 +226,6 @@ Table of Contents
 nonce = random(32)
 challenge_digest = SHA256(challenge)
 token_input = concat(0xDA7A, // Token type field is 2 bytes long
-                     len(metadata),
-                     metadata,
                      nonce,
                      challenge_digest,
                      token_key_id)
@@ -192,7 +236,7 @@ blinded_msg, blind_inv = Blind(pkI, PrepareIdentity(token_input), metadata)
 
    The Client stores the nonce, challenge_digest, and metadata values
    locally for use when finalizing the issuance protocol to produce a
-   token (as described in Section 4.3).
+   token (as described in Section 5.3).
 
    The Client then creates a TokenRequest structured as follows:
 
@@ -209,7 +253,7 @@ struct {
       challenge.
 
    *  "truncated_token_key_id" is the least significant byte of the
-      token_key_id (Section 4.5) in network byte order (in other words,
+      token_key_id (Section 5.5) in network byte order (in other words,
       the last 8 bits of token_key_id).
 
    *  "metadata" is the opaque metadata value input to the issuance
@@ -233,7 +277,7 @@ struct {
 
    <Bytes containing the TokenRequest>
 
-4.2.  Issuer-to-Client Response
+5.2.  Issuer-to-Client Response
 
    Upon receipt of the request, the Issuer validates the following
    conditions:
@@ -272,7 +316,7 @@ struct {
 
    <Bytes containing the TokenResponse>
 
-4.3.  Finalization
+5.3.  Finalization
 
    Upon receipt, the Client handles the response and, if successful,
    processes the content as follows:
@@ -285,7 +329,7 @@ struct {
    [AUTHSCHEME] as follows:
 
 struct {
-  uint16_t token_type = 0xDA7A; /* Type Partially Blind RSA (4096-bit) */
+  uint16_t token_type = 0xDA7A; /* Type Partially Blind RSA (2048-bit) */
   opaque metadata<1..2^16-1>;
   uint8_t nonce[32];
   uint8_t challenge_digest[32];
@@ -297,21 +341,21 @@ struct {
    [PROTOCOL].  If the Finalize function fails, the Client aborts the
    protocol.
 
-4.4.  Token Verification
+5.4.  Token Verification
 
    Verifying a Token requires checking that Token.authenticator is a
    valid signature over the remainder of the token input using the
    Augmented Issuer Public Key.
 
    pkM = AugmentPublicKey(pkI, Token.metadata)
-   token_authenticator_input =
-            concat("msg",
-            int_to_bytes(len(metadata), 4),
-            Token.metadata,
-            Token.token_type,
-            Token.nonce,
-            Token.challenge_digest,
-            Token.token_key_id)
+   token_input = concat(0xDA7A, // Token type field is 2 bytes long
+                        Token.nonce,
+                        Token.challenge_digest,
+                        Token.token_key_id)
+   token_authenticator_input =  concat("msg",
+       int_to_bytes(len(Token.metadata), 4),
+       Token.metadata,
+       token_input)
    valid = RSASSA-PSS-VERIFY(pkM,
                              token_authenticator_input,
                              Token.authenticator)
@@ -324,12 +368,12 @@ struct {
    the PSS mask generation function (MGF), and a 48-byte salt length
    (sLen).
 
-4.5.  Issuer Configuration
+5.5.  Issuer Configuration
 
    Issuers are configured with Private and Public Key pairs, each
    denoted skI and pkI, respectively, used to produce tokens.  Each key
    pair SHALL be generated as as specified in FIPS 186-4 [DSS], where n
-   is 4096 bits in length.  These key pairs MUST NOT be reused in other
+   is 2048 bits in length.  These key pairs MUST NOT be reused in other
    protocols.  Each key pair MUST comply with all requirements as
    specified in Section 5.2 of [PBLINDRSA].
 
@@ -344,20 +388,20 @@ struct {
    should ensure that the truncated form of new key IDs do not collide
    with other truncated key IDs in rotation.
 
-5.  Security Considerations
+6.  Security Considerations
 
    TODO Security
 
-6.  IANA Considerations
+7.  IANA Considerations
 
    This extends the token type registry defined in Section 8.2.1 of
    [PROTOCOL] with a new token type of value 0xDA7A:
 
    *  Value: 0xDA7A
 
-   *  Name: Partially Blind RSA (4096-bit)
+   *  Name: Partially Blind RSA (2048-bit)
 
-   *  Token Structure: As defined in Section 4.1
+   *  Token Structure: As defined in Section 5.1
 
    *  TokenChallenge Structure: As defined in Section 2.1 of
       [AUTHSCHEME]
@@ -375,16 +419,16 @@ struct {
    *  Notes: The RSABSSA-SHA384-PSS-Deterministic and RSABSSA-SHA384-
       PSSZERO-Deterministic variants are supported
 
-7.  References
+8.  References
 
-7.1.  Normative References
+8.1.  Normative References
 
    [AUTHSCHEME]
               Pauly, T., Valdez, S., and C. A. Wood, "The Privacy Pass
               HTTP Authentication Scheme", Work in Progress, Internet-
-              Draft, draft-ietf-privacypass-auth-scheme-09, 6 March
-              2023, <https://datatracker.ietf.org/doc/html/draft-ietf-
-              privacypass-auth-scheme-09>.
+              Draft, draft-ietf-privacypass-auth-scheme-10, 8 May 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-
+              privacypass-auth-scheme-10>.
 
    [PBLINDRSA]
               Amjad, G. A., Hendrickson, S., Wood, C. A., and K. W. L.
@@ -418,7 +462,7 @@ struct {
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-7.2.  Informative References
+8.2.  Informative References
 
    [DSS]      "Digital Signature Standard (DSS)", National Institute of
               Standards and Technology report,
