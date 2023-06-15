@@ -7,26 +7,25 @@
 <title>Public Metadata Issuance</title>
 <meta content="Scott Hendrickson" name="author">
 <meta content="
-       This document specifies a Privacy Pass token type that encodes public metadata visible to the Client, Attester, Issuer, and Origin. 
+       This document specifies Privacy Pass issuance protocols that encode public
+information visible to the Client, Attester, Issuer, and Origin into each token. 
     " name="description">
-<meta content="xml2rfc 3.17.0" name="generator">
+<meta content="xml2rfc 3.17.3" name="generator">
 <meta content="public metadata issuance" name="keyword">
 <meta content="draft-hendrickson-privacypass-public-metadata-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.17.0
-    Python 3.10.10
+  xml2rfc 3.17.3
+    Python 3.11.3
     appdirs 1.4.4
     ConfigArgParse 1.5.3
-    google-i18n-address 2.5.2
-    html5lib 1.1
+    google-i18n-address 3.0.0
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.2
-    MarkupSafe 2.1.1
     pycountry 22.3.5
     PyYAML 6.0
-    requests 2.28.1
-    setuptools 65.6.0
+    requests 2.31.0
+    setuptools 67.7.2
     six 1.16.0
     wcwidth 0.2.6
 -->
@@ -610,6 +609,7 @@ sub, sup {
   clear: left;
   float: left;
   text-align: right;
+  margin-right: 1ch;
 }
 #identifiers dd {
   margin: 0;
@@ -661,7 +661,8 @@ sub, sup {
 .references dt {
   text-align: right;
   font-weight: bold;
-  min-width: 7em;
+  min-width: 10ch;
+  margin-right: 1.5ch;
 }
 .references dt:target::before {
   content: "⇒";
@@ -669,7 +670,7 @@ sub, sup {
   margin: 0 10px 0 -25px;
 }
 .references dd {
-  margin-left: 8em !important;
+  margin-left: 12ch !important;
   overflow: auto;
 }
 
@@ -1047,11 +1048,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Public Metadata Issuance</td>
-<td class="right">March 2023</td>
+<td class="right">June 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Hendrickson</td>
-<td class="center">Expires 1 October 2023</td>
+<td class="center">Expires 17 December 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1064,12 +1065,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-hendrickson-privacypass-public-metadata-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-03-30" class="published">30 March 2023</time>
+<time datetime="2023-06-15" class="published">15 June 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-10-01">1 October 2023</time></dd>
+<dd class="expires"><time datetime="2023-12-17">17 December 2023</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1082,7 +1083,8 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <h1 id="title">Public Metadata Issuance</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document specifies a Privacy Pass token type that encodes public metadata visible to the Client, Attester, Issuer, and Origin.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document specifies Privacy Pass issuance protocols that encode public
+information visible to the Client, Attester, Issuer, and Origin into each token.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1119,7 +1121,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 1 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 17 December 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1152,21 +1154,16 @@ svg :is([fill="white"], [fill^="#fff"]) {
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-motivation" class="internal xref">Motivation</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="auto internal xref">2.1</a>.  <a href="#name-alternatives" class="internal xref">Alternatives</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-terminology" class="internal xref">Terminology</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-notation" class="internal xref">Notation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-notation" class="internal xref">Notation</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-motivation" class="internal xref">Motivation</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-issuance-protocol-for-publi" class="internal xref">Issuance Protocol for Publicly Verifiable Tokens</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-issuance-protocol-for-priva" class="internal xref">Issuance Protocol for Privately Verifiable Tokens</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-client-to-issuer-request" class="internal xref">Client-to-Issuer Request</a></p>
@@ -1186,27 +1183,55 @@ svg :is([fill="white"], [fill^="#fff"]) {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-issuance-protocol-for-publi" class="internal xref">Issuance Protocol for Publicly Verifiable Tokens</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-client-to-issuer-request-2" class="internal xref">Client-to-Issuer Request</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-issuer-to-client-response-2" class="internal xref">Issuer-to-Client Response</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-finalization-2" class="internal xref">Finalization</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
+                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-token-verification-2" class="internal xref">Token Verification</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.5">
+                <p id="section-toc.1-1.6.2.5.1"><a href="#section-6.5" class="auto internal xref">6.5</a>.  <a href="#name-issuer-configuration-2" class="internal xref">Issuer Configuration</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-privately-verifiable-token-" class="internal xref">Privately Verifiable Token Type</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-publicly-verifiable-token-t" class="internal xref">Publicly Verifiable Token Type</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="auto internal xref">9.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="auto internal xref">9.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1217,147 +1242,159 @@ svg :is([fill="white"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document specifies a Privacy Pass token type that encodes public metadata visible to the Client, Attester, Issuer, and Origin. This allows deployments to encode a small amount of information visible to
-all parties participating in the protocol.<a href="#section-1-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="motivation">
-<section id="section-2">
-      <h2 id="name-motivation">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-motivation" class="section-name selfRef">Motivation</a>
-      </h2>
-<p id="section-2-1">Public metadata enables Privacy Pass deployments that share information between clients, attesters, issuers and origins. In a 0x01 (VOPRF) or 0x02 (Blind RSA) deployment, the only information available to all parties is the <code>issuer_name</code>. If one wants to differentiate bits of information at the origin, many TokenChallenges must be sent - one for each <code>issuer_name</code> that attests to the bit required.<a href="#section-2-1" class="pilcrow">¶</a></p>
-<p id="section-2-2">For example, if a deployment was built that attested to an app’s published state in an app store, it requires 1 bit {<code>published</code>, <code>not_published</code>} and can be built with a single issuer. To build an app version attester, we need one <code>issuer_name</code> for each app version, and one challenge per version the origin needs to differentiate on each origin load. For each new app version that requires attesting, a new <code>issuer_name</code> must be deployed. If we build this system with public metadata a single TokenChallenge for a single <code>issuer_name</code> can be used. Deployment specific logic could allow adding a new app version into the metadata once sufficient users are on the new version, ensuring users are private when providing attested metadata bits to the origins.<a href="#section-2-2" class="pilcrow">¶</a></p>
-<div id="alternatives">
-<section id="section-2.1">
-        <h3 id="name-alternatives">
-<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-alternatives" class="section-name selfRef">Alternatives</a>
-        </h3>
-<p id="section-2.1-1">To implement this scheme without new cryptographic primitives, one could deploy an issuer signing key per metadata value, and publish each key’s bit assignment in Issuer Configuration. This many-key metadata deployment should provide metadata visible to all parties in the same way as the <span>[<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span> proposal outlined here, however it has reliability and scalability tradeoffs. Imagine a Privacy Pass deployment using a client cached redemption context where max-age cannot be used to expire signed tokens due to the cache, yet the deployment requires fast token expiration. Handling this requires either deploying one key per expiration period or rotating keys quickly. Many simultaneous deployed keys could be difficult to scale - for example some HSM implementations have fixed per-key costs, slow key generation, and minimum key lifetimes. Quick key rotation creates reliability risk to the system, as a pause or slowdown in key rotation could cause the system to run out of active signing or verification keys. <span>[<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span> allows deployments to change metadata sets without publishing new keys, and challenge expiry can be encoded within metadata. It pushes all metadata design into the deployment domain, instead of defining them in issuer configuration.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
-</section>
-</div>
+<p id="section-1-1">The basic Privacy Pass issuance protocols as specified in <span>[<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span> and resulting
+tokens convey only a single bit of information: whether or not the token is valid. However,
+it is possible for tokens to be issued with additional information aggreed upon by Client,
+Attester, and Issuer during issuance. This information, sometimes referred to as public
+metadata, allows Privacy Pass applications to encode deployment-specific information that is
+necessary for their use case.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">This document specifies two Privacy Pass issuance protocols that encode public information
+visible to the Client, Attester, Issuer, and Origin. One is based on the partially-oblivious
+PRF construction from <span>[<a href="#POPRF" class="cite xref">POPRF</a>]</span>, and the other is based on the partially-blind RSA signature
+scheme from <span>[<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>.<a href="#section-1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="terminology">
-<section id="section-3">
+<section id="section-2">
       <h2 id="name-terminology">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-terminology" class="section-name selfRef">Terminology</a>
       </h2>
-<p id="section-3-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
 NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
 "MAY", and "OPTIONAL" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The following terms are used throughout this document.<a href="#section-3-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-3-3.1">Public Metadata: Information that can be viewed by the Client, Attester, Issuer, and Origin, and cryptographically bound to a token.<a href="#section-3-3.1" class="pilcrow">¶</a>
-</li>
-      </ul>
+appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="notation">
-<section id="section-4">
+<section id="section-3">
       <h2 id="name-notation">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-notation" class="section-name selfRef">Notation</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-notation" class="section-name selfRef">Notation</a>
       </h2>
-<p id="section-4-1">The following terms are used throughout this document to describe the protocol operations in this document:<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">The following terms are used throughout this document to describe the protocol operations in this document:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4-2.1">len(s): the length of a byte string, in bytes.<a href="#section-4-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3-2.1">len(s): the length of a byte string, in bytes.<a href="#section-3-2.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-4-2.2">concat(x0, ..., xN): Concatenation of byte strings. For example, concat(0x01, 0x0203, 0x040506) = 0x010203040506<a href="#section-4-2.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-3-2.2">concat(x0, ..., xN): Concatenation of byte strings. For example, concat(0x01, 0x0203, 0x040506) = 0x010203040506<a href="#section-3-2.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-4-2.3">int_to_bytes: Convert a non-negative integer to a byte string. int_to_bytes is implemented as I2OSP as described in <span><a href="https://rfc-editor.org/rfc/rfc8017#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>. Note that these functions operate on byte strings in big-endian byte order.<a href="#section-4-2.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-3-2.3">int_to_bytes: Convert a non-negative integer to a byte string. int_to_bytes is
+implemented as I2OSP as described in <span><a href="https://rfc-editor.org/rfc/rfc8017#section-4.1" class="relref">Section 4.1</a> of [<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>. Note that these
+functions operate on byte strings in big-endian byte order.<a href="#section-3-2.3" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
 </div>
-<div id="public-flow">
-<section id="section-5">
-      <h2 id="name-issuance-protocol-for-publi">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-issuance-protocol-for-publi" class="section-name selfRef">Issuance Protocol for Publicly Verifiable Tokens</a>
+<div id="motivation">
+<section id="section-4">
+      <h2 id="name-motivation">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-motivation" class="section-name selfRef">Motivation</a>
       </h2>
-<p id="section-5-1">This section describes a variant of the issuance protocol in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-6" class="relref">Section 6</a> of [<a href="#PROTOCOL" class="cite xref">PROTOCOL</a>]</span>
-for producing publicly verifiable tokens including public metadata using cryptography specified in <span>[<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span>.
-In particular, this variant of the issuance protocol works for the
-<code>RSAPBSSA-SHA384-PSSZERO-Deterministic</code> or <code>RSAPBSSA-SHA384-PSS-Deterministic</code> variant of the blind RSA protocol variants described in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-6" class="relref">Section 6</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">The public metadata issuance protocol differs from the protocol in
-<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-6" class="relref">Section 6</a> of [<a href="#PROTOCOL" class="cite xref">PROTOCOL</a>]</span> in that the issuance and redemption protocols carry metadata provided by the Client and visible to the Attester, Issuer, and Origin. This means Clients can set arbitrary metadata when requesting a token, but specific values of metadata may be rejected by any of Attester, Issuer, or Origin. Similar to a token nonce, metadata is cryptographically bound to a token and cannot be altered.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">Clients provide the following as input to the issuance protocol:<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-4-1">Public metadata enables Privacy Pass deployments that share information between Clients, Attesters,
+Issuers and Origins. In the basic Privacy Pass issuance protocols (types 0x0001 and 0x0002), the only
+information available to all parties is the choice of Issuer, expressed through the TokenChallenge.
+If one wants to differentiate bits of information at the origin, many TokenChallenges must be sent,
+one for each Issuer that attests to the bit required.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">For example, if a deployment was built that attested to an app’s published state in an app store,
+it requires 1 bit {<code>published</code>, <code>not_published</code>} and can be built with a single Issuer. An app version
+attester would require one Issuer for each app version and one TokenChallenge per Issuer.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Taken further, the limitation of one bit of information in each Privacy Pass token means that a distinct
+Issuer and Issuer public key is needed for each unique value one wants to express with a token.
+This many-key metadata deployment should provide metadata visible to all parties in the same way as
+the <span>[<a href="#PBRSA" class="cite xref">PBRSA</a>]</span> proposal outlined in this document. However, it comes with practical reliability and
+scalability tradeoffs. In particular, many simultaneous deployed keys could be difficult to scale.
+Some HSM implementations have fixed per-key costs, slow key generation, and minimum key lifetimes.
+Quick key rotation creates reliability risk to the system, as a pause or slowdown in key rotation
+could cause the system to run out of active signing or verification keys. Issuance protocols that
+support public metadata mitigate these tradeoffs by allowing deployments to change metadata values
+without publishing new keys.<a href="#section-4-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="private-flow">
+<section id="section-5">
+      <h2 id="name-issuance-protocol-for-priva">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-issuance-protocol-for-priva" class="section-name selfRef">Issuance Protocol for Privately Verifiable Tokens</a>
+      </h2>
+<p id="section-5-1">This section describes a variant of the issuance protocol in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-5" class="relref">Section 5</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span>
+that supports public metadata based on the partially oblivious PRF (POPRF) from
+<span>[<a href="#POPRF" class="cite xref">POPRF</a>]</span>. Issuers provide a Private and Public Key, denoted
+<code>skI</code> and <code>pkI</code> respectively, used to produce tokens as input to the protocol.
+See <a href="#private-issuer-configuration" class="auto internal xref">Section 5.5</a> for how this key pair is generated.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">Clients provide the following as input to the issuance protocol:<a href="#section-5-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5-4.1">Issuer Request URI: A URI to which token request messages are sent. This can
+<li class="normal" id="section-5-3.1">Issuer Request URI: A URI to which token request messages are sent. This can
 be a URL derived from the "issuer-request-uri" value in the Issuer's
 directory resource, or it can be another Client-configured URL. The value
 of this parameter depends on the Client configuration and deployment model.
 For example, in the 'Split Origin, Attester, Issuer' deployment model, the
-Issuer Request URI might be correspond to the Client's configured Attester,
-and the Attester is configured to relay requests to the Issuer.<a href="#section-5-4.1" class="pilcrow">¶</a>
+Issuer Request URI might correspond to the Client's configured Attester,
+and the Attester is configured to relay requests to the Issuer.<a href="#section-5-3.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-5-4.2">Issuer name: An identifier for the Issuer. This is typically a host name that
-can be used to construct HTTP requests to the Issuer.<a href="#section-5-4.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-5-3.2">Issuer name: An identifier for the Issuer. This is typically a host name that
+can be used to construct HTTP requests to the Issuer.<a href="#section-5-3.2" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-5-4.3">Issuer Public Key: <code>pkI</code>, with a key identifier <code>token_key_id</code> computed as
-described in <a href="#public-issuer-configuration" class="auto internal xref">Section 5.5</a>.<a href="#section-5-4.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-5-3.3">Issuer Public Key: <code>pkI</code>, with a key identifier <code>token_key_id</code> computed as
+described in <a href="#public-issuer-configuration" class="auto internal xref">Section 6.5</a>.<a href="#section-5-3.3" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-5-4.4">Challenge value: <code>challenge</code>, an opaque byte string. For example, this might
-be provided by the redemption protocol in <span>[<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span>.<a href="#section-5-4.4" class="pilcrow">¶</a>
+        <li class="normal" id="section-5-3.4">Challenge value: <code>challenge</code>, an opaque byte string. For example, this might
+be provided by the redemption protocol in <span>[<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span>.<a href="#section-5-3.4" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-5-4.5">Public Metadata: <code>metadata</code>, an opaque byte string of length at most 2<sup>16-1</sup> bytes.<a href="#section-5-4.5" class="pilcrow">¶</a>
+        <li class="normal" id="section-5-3.5">Extensions: <code>extensions</code>, an Extensions structure as defined in <span>[<a href="#TOKEN-EXTENSION" class="cite xref">TOKEN-EXTENSION</a>]</span>.<a href="#section-5-3.5" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-5-5">Given this configuration and these inputs, the two messages exchanged in
-this protocol are described below. The constant <code>Nk</code> is defined as 256 for token type 0xDA7A.<a href="#section-5-5" class="pilcrow">¶</a></p>
-<div id="public-request">
+<p id="section-5-4">Given this configuration and these inputs, the two messages exchanged in
+this protocol are described below. This section uses notation described in
+<span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-4" class="relref">Section 4</a></span>, including SerializeElement and DeserializeElement,
+SerializeScalar and DeserializeScalar, and DeriveKeyPair.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<p id="section-5-5">The constants <code>Ne</code> and <code>Ns</code> are as defined in <span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-4" class="relref">Section 4</a></span> for
+OPRF(P-384, SHA-384). The constant <code>Nk</code>, which is also equal to <code>Nh</code> as defined
+in <span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-4" class="relref">Section 4</a></span>, is defined in <a href="#iana" class="auto internal xref">Section 8</a>.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<div id="private-request">
 <section id="section-5.1">
         <h3 id="name-client-to-issuer-request">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-client-to-issuer-request" class="section-name selfRef">Client-to-Issuer Request</a>
         </h3>
-<p id="section-5.1-1">The Client first creates an issuance request message for a random value
-<code>nonce</code> using the input challenge and Issuer key identifier as follows:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The Client first creates a context as follows:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.1-2">
+<pre>
+client_context = SetupPOPRFClient("P384-SHA384", pkI)
+</pre><a href="#section-5.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-3">Here, "P384-SHA384" is the identifier corresponding to the
+OPRF(P-384, SHA-384) ciphersuite in <span>[<a href="#POPRF" class="cite xref">POPRF</a>]</span>. SetupPOPRFClient
+is defined in <span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-3.2" class="relref">Section 3.2</a></span>.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<p id="section-5.1-4">The Client then creates an issuance request message for a random value <code>nonce</code>
+with the input challenge and Issuer key identifier as described below:<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.1-5">
 <pre>
 nonce = random(32)
 challenge_digest = SHA256(challenge)
-token_input = concat(0xDA7A, // Token type field is 2 bytes long
-                     int_to_bytes(len(metadata), 2),
-                     metadata,
+token_input = concat(0xDA7B, // Token type field is 2 bytes long
                      nonce,
                      challenge_digest,
                      token_key_id)
-blinded_msg, blind_inv = Blind(pkI, PrepareIdentity(token_input), metadata)
-</pre><a href="#section-5.1-2" class="pilcrow">¶</a>
+blind, blinded_element, tweaked_key = client_context.Blind(token_input, extensions, pkI)
+</pre><a href="#section-5.1-5" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-3">Where  <code>PrepareIdentity</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-6" class="relref">Section 6</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span> and <code>Blind</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.2" class="relref">Section 4.2</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span><a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">The Client stores the nonce, challenge_digest, and metadata values locally for use
-when finalizing the issuance protocol to produce a token (as described
-in <a href="#public-finalize" class="auto internal xref">Section 5.3</a>).<a href="#section-5.1-4" class="pilcrow">¶</a></p>
-<p id="section-5.1-5">The Client then creates a TokenRequest structured as follows:<a href="#section-5.1-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-6">
+<p id="section-5.1-6">The Blind function is defined in <span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-3.3.3" class="relref">Section 3.3.3</a></span>.
+If the Blind function fails, the Client aborts the protocol.
+The Client stores the <code>nonce</code>, <code>challenge_digest</code>, and <code>tweaked_key</code> values locally
+for use when finalizing the issuance protocol to produce a token
+(as described in <a href="#private-finalize" class="auto internal xref">Section 5.3</a>).<a href="#section-5.1-6" class="pilcrow">¶</a></p>
+<p id="section-5.1-7">The Client then creates an ExtendedTokenRequest structured as follows:<a href="#section-5.1-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.1-8">
 <pre>
 struct {
-  uint16_t token_type = 0xDA7A; /* Type Public Metadata Blind RSA (2048-bit) */
-  uint8_t truncated_token_key_id;
-  opaque metadata&lt;1..2^16-1&gt;;
-  uint8_t blinded_msg[Nk];
-} MetadataTokenRequest;
-</pre><a href="#section-5.1-6" class="pilcrow">¶</a>
+  TokenRequest request;
+  Extensions extensions;
+} ExtendedTokenRequest;
+</pre><a href="#section-5.1-8" class="pilcrow">¶</a>
 </div>
-<p id="section-5.1-7">The structure fields are defined as follows:<a href="#section-5.1-7" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-5.1-8.1">"token_type" is a 2-octet integer, which matches the type in the challenge.<a href="#section-5.1-8.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-5.1-8.2">"truncated_token_key_id" is the least significant byte of the <code>token_key_id</code>
-(<a href="#public-issuer-configuration" class="auto internal xref">Section 5.5</a>) in network byte order (in other words, the
-last 8 bits of <code>token_key_id</code>).<a href="#section-5.1-8.2" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-5.1-8.3">"metadata" is the opaque metadata value input to the issuance protocol.<a href="#section-5.1-8.3" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-5.1-8.4">"blinded_msg" is the Nk-octet request defined above.<a href="#section-5.1-8.4" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-5.1-9">The Client then generates an HTTP POST request to send to the Issuer Request
-URI, with the TokenRequest as the content. The media type for this request
-is "application/private-token-request". An example request is shown below:<a href="#section-5.1-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.1-10">
+<p id="section-5.1-9">The contents of ExtendedTokenRequest.request are as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-5" class="relref">Section 5</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span>.
+The contents of ExtendedTokenRequest.extensions match the Client's configured <code>extensions</code> value.<a href="#section-5.1-9" class="pilcrow">¶</a></p>
+<p id="section-5.1-10">The Client then generates an HTTP POST request to send to the Issuer Request
+URI, with the ExtendedTokenRequest as the content. The media type for this request
+is "application/private-token-request". An example request is shown below:<a href="#section-5.1-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.1-11">
 <pre>
 :method = POST
 :scheme = https
@@ -1366,47 +1403,64 @@ is "application/private-token-request". An example request is shown below:<a hre
 accept = application/private-token-response
 cache-control = no-cache, no-store
 content-type = application/private-token-request
-content-length = &lt;Length of TokenRequest&gt;
+content-length = &lt;Length of ExtendedTokenRequest&gt;
 
-&lt;Bytes containing the TokenRequest&gt;
-</pre><a href="#section-5.1-10" class="pilcrow">¶</a>
+&lt;Bytes containing the ExtendedTokenRequest&gt;
+</pre><a href="#section-5.1-11" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="public-response">
+<div id="private-response">
 <section id="section-5.2">
         <h3 id="name-issuer-to-client-response">
 <a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-issuer-to-client-response" class="section-name selfRef">Issuer-to-Client Response</a>
         </h3>
-<p id="section-5.2-1">Upon receipt of the request, the Issuer validates the following conditions:<a href="#section-5.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-5.2-2.1">The TokenRequest contains a supported token_type.<a href="#section-5.2-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-5.2-1.1">The ExtendedTokenRequest.request contains a supported token_type.<a href="#section-5.2-1.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-5.2-2.2">The TokenRequest.truncated_token_key_id corresponds to the truncated key
-ID of an Issuer Public Key.<a href="#section-5.2-2.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-1.2">The ExtendedTokenRequest.request.truncated_token_key_id corresponds to the truncated key
+ID of an Issuer Public Key.<a href="#section-5.2-1.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-5.2-2.3">The TokenRequest.blinded_msg is of the correct size.<a href="#section-5.2-2.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-5.2-1.3">The ExtendedTokenRequest.request.blinded_msg is of the correct size.<a href="#section-5.2-1.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.2-1.4">The ExtendedTokenRequest.extensions value is permitted by the Issuer's policy.<a href="#section-5.2-1.4" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-5.2-3">If any of these conditions is not met, the Issuer MUST return an HTTP 400 error
+<p id="section-5.2-2">If any of these conditions is not met, the Issuer MUST return an HTTP 400 error
 to the Client, which will forward the error to the client. Otherwise, if the
-Issuer is willing to produce a token token to the Client for the provided metadata value, the Issuer
-completes the issuance flow by computing a blinded response as follows:<a href="#section-5.2-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2-4">
+Issuer is willing to produce a token token to the Client for the provided extensions,
+the Issuer then tries to deseralize ExtendedTokenRequest.request.blinded_msg using
+DeserializeElement from <span><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-2.1" class="relref">Section 2.1</a> of [<a href="#POPRF" class="cite xref">POPRF</a>]</span>, yielding <code>blinded_element</code>.
+If this fails, the Issuer MUST return an HTTP 400 error to the client.
+Otherwise, the Issuer completes the issuance flow by computing a blinded response as follows:<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2-3">
 <pre>
-blind_sig = BlindSign(skI, TokenRequest.blinded_msg, metadata)
-</pre><a href="#section-5.2-4" class="pilcrow">¶</a>
+server_context = SetupPOPRFServer("P384-SHA384", skI, pkI)
+evaluate_element, proof =
+  server_context.BlindEvaluate(skI, blinded_element, ExtendedTokenRequest.extensions)
+</pre><a href="#section-5.2-3" class="pilcrow">¶</a>
 </div>
-<p id="section-5.2-5">Where  <code>BlindSign</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.3" class="relref">Section 4.3</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span>.<a href="#section-5.2-5" class="pilcrow">¶</a></p>
-<p id="section-5.2-6">The result is encoded and transmitted to the client in the following
-TokenResponse structure:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.2-7">
+<p id="section-5.2-4">SetupPOPRFServer is defined in <span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-3.2" class="relref">Section 3.2</a></span> and BlindEvaluate is defined in
+<span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-3.3.3" class="relref">Section 3.3.3</a></span>. The Issuer then creates a TokenResponse structured
+as follows:<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.2-5">
 <pre>
 struct {
-  uint8_t blind_sig[Nk];
-} MetadataTokenResponse;
-</pre><a href="#section-5.2-7" class="pilcrow">¶</a>
+   uint8_t evaluate_msg[Ne];
+   uint8_t evaluate_proof[Ns+Ns];
+} TokenResponse;
+</pre><a href="#section-5.2-5" class="pilcrow">¶</a>
 </div>
+<p id="section-5.2-6">The structure fields are defined as follows:<a href="#section-5.2-6" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-5.2-7.1">"evaluate_msg" is the Ne-octet evaluated message, computed as
+<code>SerializeElement(evaluate_element)</code>.<a href="#section-5.2-7.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-5.2-7.2">"evaluate_proof" is the (Ns+Ns)-octet serialized proof, which is a pair of
+Scalar values, computed as
+<code>concat(SerializeScalar(proof[0]), SerializeScalar(proof[1]))</code>.<a href="#section-5.2-7.2" class="pilcrow">¶</a>
+</li>
+        </ul>
 <p id="section-5.2-8">The Issuer generates an HTTP response with status code 200 whose content
 consists of TokenResponse, with the content type set as
 "application/private-token-response".<a href="#section-5.2-8" class="pilcrow">¶</a></p>
@@ -1421,35 +1475,43 @@ content-length = &lt;Length of TokenResponse&gt;
 </div>
 </section>
 </div>
-<div id="public-finalize">
+<div id="private-finalize">
 <section id="section-5.3">
         <h3 id="name-finalization">
 <a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-finalization" class="section-name selfRef">Finalization</a>
         </h3>
-<p id="section-5.3-1">Upon receipt, the Client handles the response and, if successful, processes the
-content as follows:<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-1">Upon receipt, the Client handles the response and, if successful, deserializes
+the content values TokenResponse.evaluate_msg and TokenResponse.evaluate_proof,
+yielding <code>evaluated_element</code> and <code>proof</code>. If deserialization of either value
+fails, the Client aborts the protocol. Otherwise, the Client processes the
+response as follows:<a href="#section-5.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.3-2">
 <pre>
-authenticator = Finalize(pkI, nonce, metadata, blind_sig, blind_inv)
+authenticator = client_context.Finalize(token_input, blind,
+                                        evaluated_element,
+                                        blinded_element,
+                                        proof, extensions, tweaked_key)
 </pre><a href="#section-5.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.3-3">Where <code>Finalize</code> function is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.4" class="relref">Section 4.4</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span>.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
-<p id="section-5.3-4">If this succeeds, the Client then constructs a Token as described in <span>[<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span> as
-follows:<a href="#section-5.3-4" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.3-5">
+<p id="section-5.3-3">The Finalize function is defined in <span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-3.3.3" class="relref">Section 3.3.3</a></span>. If this
+succeeds, the Client then constructs a Token as follows:<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.3-4">
 <pre>
 struct {
-  uint16_t token_type = 0xDA7A; /* Type Partially Blind RSA (2048-bit) */
-  opaque metadata&lt;1..2^16-1&gt;;
+  uint16_t token_type = 0xDA7B; /* Type POPRF(P-384, SHA-384) */
   uint8_t nonce[32];
   uint8_t challenge_digest[32];
   uint8_t token_key_id[32];
   uint8_t authenticator[Nk];
 } Token;
-</pre><a href="#section-5.3-5" class="pilcrow">¶</a>
+</pre><a href="#section-5.3-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.3-6">The Token.nonce value is that which was sampled in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-5.1" class="relref">Section 5.1</a> of [<a href="#PROTOCOL" class="cite xref">PROTOCOL</a>]</span>.
-If the Finalize function fails, the Client aborts the protocol.<a href="#section-5.3-6" class="pilcrow">¶</a></p>
+<p id="section-5.3-5">The Token.nonce value is that which was sampled in <a href="#private-request" class="auto internal xref">Section 5.1</a>.
+If the Finalize function fails, the Client aborts the protocol.<a href="#section-5.3-5" class="pilcrow">¶</a></p>
+<p id="section-5.3-6">The Client will send this Token to Origins for redemption in the "token" HTTP
+authentication parameter as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-10#section-2.2" class="relref">Section 2.2</a> of [<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span>.
+The Client also supplies its extensions value as an additional authentication
+parameter as specified in <span>[<a href="#TOKEN-EXTENSION" class="cite xref">TOKEN-EXTENSION</a>]</span>.<a href="#section-5.3-6" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="token-verification">
@@ -1457,114 +1519,378 @@ If the Finalize function fails, the Client aborts the protocol.<a href="#section
         <h3 id="name-token-verification">
 <a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-token-verification" class="section-name selfRef">Token Verification</a>
         </h3>
-<p id="section-5.4-1">Verifying a Token requires checking that Token.authenticator is a valid
-signature over the remainder of the token input using the Augmented Issuer Public Key.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-1">Verifying a Token requires creating a POPRF context using the Issuer Private
+Key and Public Key, evaluating the token contents with the corresponding extensions,
+and comparing the result against the token authenticator value:<a href="#section-5.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-5.4-2">
 <pre>
-pkM = AugmentPublicKey(pkI, Token.metadata)
-token_input = concat(0xDA7A, // Token type field is 2 bytes long
-                     int_to_bytes(len(Token.metadata), 2),
-                     Token.metadata,
-                     Token.nonce,
-                     Token.challenge_digest,
-                     Token.token_key_id)
-token_authenticator_input =  concat("msg",
-    int_to_bytes(len(Token.metadata), 2),
-    Token.metadata,
-    token_input)
-valid = RSASSA-PSS-VERIFY(pkM,
-                          token_authenticator_input,
-                          Token.authenticator)
+server_context = SetupPOPRFServer("P384-SHA384", skI)
+token_authenticator_input =
+  concat(Token.token_type,
+         Token.nonce,
+         Token.challenge_digest,
+         Token.token_key_id)
+token_authenticator =
+  server_context.Evaluate(skI, token_authenticator_input, extensions)
+valid = (token_authenticator == Token.authenticator)
 </pre><a href="#section-5.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.4-3">Where <code>AugmentPublicKey</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.6" class="relref">Section 4.6</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span>,
-and message verification is redefined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.5" class="relref">Section 4.5</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span>.<a href="#section-5.4-3" class="pilcrow">¶</a></p>
-<p id="section-5.4-4">The function <code>RSASSA-PSS-VERIFY</code> is defined in <span><a href="https://rfc-editor.org/rfc/rfc8017#section-8.1.2" class="relref">Section 8.1.2</a> of [<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>,
-using SHA-384 as the Hash function, MGF1 with SHA-384 as the PSS mask
-generation function (MGF), and a 48-byte salt length (sLen).<a href="#section-5.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="public-issuer-configuration">
+<div id="private-issuer-configuration">
 <section id="section-5.5">
         <h3 id="name-issuer-configuration">
 <a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-issuer-configuration" class="section-name selfRef">Issuer Configuration</a>
         </h3>
-<p id="section-5.5-1">Issuers are configured with Private and Public Key pairs, each denoted skI and
+<p id="section-5.5-1">Issuers are configured with Private and Public Key pairs, each denoted <code>skI</code>
+and <code>pkI</code>, respectively, used to produce tokens. These keys MUST NOT be reused
+in other protocols. A RECOMMENDED method for generating key pairs is as
+follows:<a href="#section-5.5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-2">
+<pre>
+seed = random(Ns)
+(skI, pkI) = DeriveKeyPair(seed, "PrivacyPass-TypeDA7B")
+</pre><a href="#section-5.5-2" class="pilcrow">¶</a>
+</div>
+<p id="section-5.5-3">The DeriveKeyPair function is defined in <span>[<a href="#POPRF" class="cite xref">POPRF</a>], <a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21#section-3.3.1" class="relref">Section 3.3.1</a></span>.
+The key identifier for a public key <code>pkI</code>, denoted <code>token_key_id</code>, is computed
+as follows:<a href="#section-5.5-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.5-4">
+<pre>
+token_key_id = SHA256(SerializeElement(pkI))
+</pre><a href="#section-5.5-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.5-5">Since Clients truncate <code>token_key_id</code> in each <code>TokenRequest</code>, Issuers should
+ensure that the truncated form of new key IDs do not collide with other
+truncated key IDs in rotation.<a href="#section-5.5-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="public-flow">
+<section id="section-6">
+      <h2 id="name-issuance-protocol-for-publi">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-issuance-protocol-for-publi" class="section-name selfRef">Issuance Protocol for Publicly Verifiable Tokens</a>
+      </h2>
+<p id="section-6-1">This section describes a variant of the issuance protocol in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-6" class="relref">Section 6</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span>
+for producing publicly verifiable tokens including public metadata using cryptography specified in <span>[<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>.
+In particular, this variant of the issuance protocol works for the
+<code>RSAPBSSA-SHA384-PSSZERO-Deterministic</code> or <code>RSAPBSSA-SHA384-PSS-Deterministic</code>
+variant of the blind RSA protocol variants described in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-6" class="relref">Section 6</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">The public metadata issuance protocol differs from the protocol in
+<span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-6" class="relref">Section 6</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span> in that the issuance and redemption protocols carry metadata
+provided by the Client and visible to the Attester, Issuer, and Origin. This means Clients
+can set arbitrary metadata when requesting a token, but specific values of metadata may be
+rejected by any of Attester, Issuer, or Origin. Similar to a token nonce, metadata is
+cryptographically bound to a token and cannot be altered.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">Clients provide the following as input to the issuance protocol:<a href="#section-6-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-4.1">Issuer Request URI: A URI to which token request messages are sent. This can
+be a URL derived from the "issuer-request-uri" value in the Issuer's
+directory resource, or it can be another Client-configured URL. The value
+of this parameter depends on the Client configuration and deployment model.
+For example, in the 'Split Origin, Attester, Issuer' deployment model, the
+Issuer Request URI might be correspond to the Client's configured Attester,
+and the Attester is configured to relay requests to the Issuer.<a href="#section-6-4.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-4.2">Issuer name: An identifier for the Issuer. This is typically a host name that
+can be used to construct HTTP requests to the Issuer.<a href="#section-6-4.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-4.3">Issuer Public Key: <code>pkI</code>, with a key identifier <code>token_key_id</code> computed as
+described in <a href="#public-issuer-configuration" class="auto internal xref">Section 6.5</a>.<a href="#section-6-4.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-4.4">Challenge value: <code>challenge</code>, an opaque byte string. For example, this might
+be provided by the redemption protocol in <span>[<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span>.<a href="#section-6-4.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-4.5">Extensions: <code>extensions</code>, an Extensions structure as defined in <span>[<a href="#TOKEN-EXTENSION" class="cite xref">TOKEN-EXTENSION</a>]</span>.<a href="#section-6-4.5" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-6-5">Given this configuration and these inputs, the two messages exchanged in
+this protocol are described below. The constant <code>Nk</code> is defined as 256 for token type 0xDA7A.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<div id="public-request">
+<section id="section-6.1">
+        <h3 id="name-client-to-issuer-request-2">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-client-to-issuer-request-2" class="section-name selfRef">Client-to-Issuer Request</a>
+        </h3>
+<p id="section-6.1-1">The Client first creates an issuance request message for a random value
+<code>nonce</code> using the input challenge and Issuer key identifier as follows:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1-2">
+<pre>
+nonce = random(32)
+challenge_digest = SHA256(challenge)
+token_input = concat(0xDA7A, // Token type field is 2 bytes long
+                     nonce,
+                     challenge_digest,
+                     token_key_id)
+blinded_msg, blind_inv = Blind(pkI, PrepareIdentity(token_input), extensions)
+</pre><a href="#section-6.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1-3">Where  <code>PrepareIdentity</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-6" class="relref">Section 6</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span> and <code>Blind</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.2" class="relref">Section 4.2</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span><a href="#section-6.1-3" class="pilcrow">¶</a></p>
+<p id="section-6.1-4">The Client stores the <code>nonce</code>, <code>challenge_digest</code>, and <code>extensions</code> values locally for use
+when finalizing the issuance protocol to produce a token (as described in <a href="#public-finalize" class="auto internal xref">Section 6.3</a>).<a href="#section-6.1-4" class="pilcrow">¶</a></p>
+<p id="section-6.1-5">The Client then creates an ExtendedTokenRequest structured as follows:<a href="#section-6.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1-6">
+<pre>
+struct {
+  TokenRequest request;
+  Extensions extensions;
+} ExtendedTokenRequest;
+</pre><a href="#section-6.1-6" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1-7">The contents of ExtendedTokenRequest.request are as defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-6" class="relref">Section 6</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span>.
+The contents of ExtendedTokenRequest.extensions match the Client's configured <code>extensions</code> value.<a href="#section-6.1-7" class="pilcrow">¶</a></p>
+<p id="section-6.1-8">The Client then generates an HTTP POST request to send to the Issuer Request
+URI, with the ExtendedTokenRequest as the content. The media type for this request
+is "application/private-token-request". An example request is shown below:<a href="#section-6.1-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1-9">
+<pre>
+:method = POST
+:scheme = https
+:authority = issuer.example.net
+:path = /request
+accept = application/private-token-response
+cache-control = no-cache, no-store
+content-type = application/private-token-request
+content-length = &lt;Length of ExtendedTokenRequest&gt;
+
+&lt;Bytes containing the ExtendedTokenRequest&gt;
+</pre><a href="#section-6.1-9" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="public-response">
+<section id="section-6.2">
+        <h3 id="name-issuer-to-client-response-2">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-issuer-to-client-response-2" class="section-name selfRef">Issuer-to-Client Response</a>
+        </h3>
+<p id="section-6.2-1">Upon receipt of the request, the Issuer validates the following conditions:<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6.2-2.1">The ExtendedTokenRequest.request contains a supported token_type.<a href="#section-6.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-2.2">The ExtendedTokenRequest.request.truncated_token_key_id corresponds to the truncated key
+ID of an Issuer Public Key.<a href="#section-6.2-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-2.3">The ExtendedTokenRequest.request.blinded_msg is of the correct size.<a href="#section-6.2-2.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-6.2-2.4">The ExtendedTokenRequest.extensions value is permitted by the Issuer's policy.<a href="#section-6.2-2.4" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-6.2-3">If any of these conditions is not met, the Issuer MUST return an HTTP 400 error
+to the Client, which will forward the error to the client. Otherwise, if the
+Issuer is willing to produce a token token to the Client for the provided extensions,
+the Issuer completes the issuance flow by computing a blinded response as follows:<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2-4">
+<pre>
+blind_sig = BlindSign(skI, ExtendedTokenRequest.request.blinded_msg, ExtendedTokenRequest.extensions)
+</pre><a href="#section-6.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-6.2-5">Where <code>BlindSign</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.3" class="relref">Section 4.3</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
+<p id="section-6.2-6">The result is encoded and transmitted to the client in a TokenResponse structure as
+defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-6" class="relref">Section 6</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span>.<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.2-7">The Issuer generates an HTTP response with status code 200 whose content
+consists of TokenResponse, with the content type set as
+"application/private-token-response".<a href="#section-6.2-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2-8">
+<pre>
+:status = 200
+content-type = application/private-token-response
+content-length = &lt;Length of TokenResponse&gt;
+
+&lt;Bytes containing the TokenResponse&gt;
+</pre><a href="#section-6.2-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="public-finalize">
+<section id="section-6.3">
+        <h3 id="name-finalization-2">
+<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-finalization-2" class="section-name selfRef">Finalization</a>
+        </h3>
+<p id="section-6.3-1">Upon receipt, the Client handles the response and, if successful, processes the
+content as follows:<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.3-2">
+<pre>
+authenticator = Finalize(pkI, nonce, extensions, blind_sig, blind_inv)
+</pre><a href="#section-6.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.3-3">Where <code>Finalize</code> function is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.4" class="relref">Section 4.4</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
+<p id="section-6.3-4">If this succeeds, the Client then constructs a Token as described in <span>[<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span> as
+follows:<a href="#section-6.3-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.3-5">
+<pre>
+struct {
+  uint16_t token_type = 0xDA7A; /* Type Partially Blind RSA (2048-bit) */
+  uint8_t nonce[32];
+  uint8_t challenge_digest[32];
+  uint8_t token_key_id[32];
+  uint8_t authenticator[Nk];
+} Token;
+</pre><a href="#section-6.3-5" class="pilcrow">¶</a>
+</div>
+<p id="section-6.3-6">The Token.nonce value is that which was sampled in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-5.1" class="relref">Section 5.1</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span>.
+If the Finalize function fails, the Client aborts the protocol.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
+<p id="section-6.3-7">The Client will send this Token to Origins for redemption in the "token" HTTP
+authentication parameter as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-10#section-2.2" class="relref">Section 2.2</a> of [<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span>.
+The Client also supplies its extensions value as an additional authentication
+parameter as specified in <span>[<a href="#TOKEN-EXTENSION" class="cite xref">TOKEN-EXTENSION</a>]</span>.<a href="#section-6.3-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="token-verification-1">
+<section id="section-6.4">
+        <h3 id="name-token-verification-2">
+<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-token-verification-2" class="section-name selfRef">Token Verification</a>
+        </h3>
+<p id="section-6.4-1">Verifying a Token requires checking that Token.authenticator is a valid
+signature over the remainder of the token input with respect to the corresponding
+Extensions value <code>extensions</code> using the Augmented Issuer Public Key.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.4-2">
+<pre>
+pkM = AugmentPublicKey(pkI, extensions)
+token_input = concat(0xDA7A, // Token type field is 2 bytes long
+                     Token.nonce,
+                     Token.challenge_digest,
+                     Token.token_key_id)
+token_authenticator_input =  concat("msg",
+    int_to_bytes(len(extensions), 2),
+    extensions,
+    token_input)
+valid = RSASSA-PSS-VERIFY(pkM,
+                          token_authenticator_input,
+                          Token.authenticator)
+</pre><a href="#section-6.4-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.4-3">Where <code>AugmentPublicKey</code> is defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.6" class="relref">Section 4.6</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>,
+and message verification is redefined in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-4.5" class="relref">Section 4.5</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>.<a href="#section-6.4-3" class="pilcrow">¶</a></p>
+<p id="section-6.4-4">The function <code>RSASSA-PSS-VERIFY</code> is defined in <span><a href="https://rfc-editor.org/rfc/rfc8017#section-8.1.2" class="relref">Section 8.1.2</a> of [<a href="#RFC8017" class="cite xref">RFC8017</a>]</span>,
+using SHA-384 as the Hash function, MGF1 with SHA-384 as the PSS mask
+generation function (MGF), and a 48-byte salt length (sLen).<a href="#section-6.4-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="public-issuer-configuration">
+<section id="section-6.5">
+        <h3 id="name-issuer-configuration-2">
+<a href="#section-6.5" class="section-number selfRef">6.5. </a><a href="#name-issuer-configuration-2" class="section-name selfRef">Issuer Configuration</a>
+        </h3>
+<p id="section-6.5-1">Issuers are configured with Private and Public Key pairs, each denoted skI and
 pkI, respectively, used to produce tokens. Each key pair SHALL be generated as
-as specified in FIPS 186-4 <span>[<a href="#DSS" class="cite xref">DSS</a>]</span>, where n is 2048 bits in length. These key
-pairs MUST NOT be reused in other protocols. Each key pair MUST comply with all requirements as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-5.2" class="relref">Section 5.2</a> of [<a href="#PBLINDRSA" class="cite xref">PBLINDRSA</a>]</span>.<a href="#section-5.5-1" class="pilcrow">¶</a></p>
-<p id="section-5.5-2">The key identifier for a keypair (skI, pkI), denoted <code>token_key_id</code>, is
+as specified in FIPS 186-4 <span>[<a href="#DSS" class="cite xref">DSS</a>]</span>, where the RSA modulus
+is 2048 bits in length. These key pairs MUST NOT be reused in other protocols.
+Each key pair MUST comply with all requirements as specified in <span><a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00#section-5.2" class="relref">Section 5.2</a> of [<a href="#PBRSA" class="cite xref">PBRSA</a>]</span>.<a href="#section-6.5-1" class="pilcrow">¶</a></p>
+<p id="section-6.5-2">The key identifier for a keypair (skI, pkI), denoted <code>token_key_id</code>, is
 computed as SHA256(encoded_key), where encoded_key is a DER-encoded
 SubjectPublicKeyInfo (SPKI) object carrying pkI. The SPKI object MUST use the
 RSASSA-PSS OID <span>[<a href="#RFC5756" class="cite xref">RFC5756</a>]</span>, which specifies the hash algorithm and salt size.
 The salt size MUST match the output size of the hash function associated with
-the public key and token type.<a href="#section-5.5-2" class="pilcrow">¶</a></p>
-<p id="section-5.5-3">Since Clients truncate <code>token_key_id</code> in each <code>TokenRequest</code>, Issuers should
+the public key and token type.<a href="#section-6.5-2" class="pilcrow">¶</a></p>
+<p id="section-6.5-3">Since Clients truncate <code>token_key_id</code> in each <code>TokenRequest</code>, Issuers should
 ensure that the truncated form of new key IDs do not collide with other
-truncated key IDs in rotation.<a href="#section-5.5-3" class="pilcrow">¶</a></p>
+truncated key IDs in rotation.<a href="#section-6.5-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-6">
-      <h2 id="name-security-considerations">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
-      </h2>
-<p id="section-6-1">TODO Security<a href="#section-6-1" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="iana-considerations">
 <section id="section-7">
-      <h2 id="name-iana-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      <h2 id="name-security-considerations">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-7-1">This extends the token type registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-8.2.1" class="relref">Section 8.2.1</a> of [<a href="#PROTOCOL" class="cite xref">PROTOCOL</a>]</span> with a new token type of value <code>0xDA7A</code>:<a href="#section-7-1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-7-2.1">Value: 0xDA7A<a href="#section-7-2.1" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.2">Name: Partially Blind RSA (2048-bit)<a href="#section-7-2.2" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.3">Token Structure: As defined in <a href="#public-request" class="auto internal xref">Section 5.1</a><a href="#section-7-2.3" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.4">TokenChallenge Structure: As defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-09#section-2.1" class="relref">Section 2.1</a> of [<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span><a href="#section-7-2.4" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.5">Publicly Verifiable: Y<a href="#section-7-2.5" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.6">Public Metadata: Y<a href="#section-7-2.6" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.7">Private Metadata: N<a href="#section-7-2.7" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.8">Nk: 256<a href="#section-7-2.8" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.9">Nid: 32<a href="#section-7-2.9" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-7-2.10">Notes: The RSABSSA-SHA384-PSS-Deterministic and
-RSABSSA-SHA384-PSSZERO-Deterministic variants are supported<a href="#section-7-2.10" class="pilcrow">¶</a>
-</li>
-      </ul>
+<p id="section-7-1">TODO Security<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="iana">
 <section id="section-8">
-      <h2 id="name-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
+      <h2 id="name-iana-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
+<p id="section-8-1">This document extends the token type registry defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10#section-8.2.1" class="relref">Section 8.2.1</a> of [<a href="#BASIC-PROTOCOL" class="cite xref">BASIC-PROTOCOL</a>]</span> with two new
+entries described in the following sub-sections.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<div id="privately-verifiable-token-type">
 <section id="section-8.1">
+        <h3 id="name-privately-verifiable-token-">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-privately-verifiable-token-" class="section-name selfRef">Privately Verifiable Token Type</a>
+        </h3>
+<p id="section-8.1-1">The contents of this token type registry entry are as follows:<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.1-2.1">Value: 0xDA7B<a href="#section-8.1-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.2">Name: Partially Oblivious PRF, OPRF(P-384, SHA-384)<a href="#section-8.1-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.3">Token Structure: As defined in <a href="#private-finalize" class="auto internal xref">Section 5.3</a><a href="#section-8.1-2.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.4">TokenChallenge Structure: As defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-10#section-2.1" class="relref">Section 2.1</a> of [<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span><a href="#section-8.1-2.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.5">Publicly Verifiable: N<a href="#section-8.1-2.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.6">Public Metadata: Y<a href="#section-8.1-2.6" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.7">Private Metadata: N<a href="#section-8.1-2.7" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.8">Nk: 48<a href="#section-8.1-2.8" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.9">Nid: 32<a href="#section-8.1-2.9" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.1-2.10">Notes: N/A<a href="#section-8.1-2.10" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+</div>
+<div id="publicly-verifiable-token-type">
+<section id="section-8.2">
+        <h3 id="name-publicly-verifiable-token-t">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-publicly-verifiable-token-t" class="section-name selfRef">Publicly Verifiable Token Type</a>
+        </h3>
+<p id="section-8.2-1">The contents of this token type registry entry are as follows:<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.1">Value: 0xDA7A<a href="#section-8.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.2">Name: Partially Blind RSA (2048-bit)<a href="#section-8.2-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.3">Token Structure: As defined in <a href="#public-finalize" class="auto internal xref">Section 6.3</a><a href="#section-8.2-2.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.4">TokenChallenge Structure: As defined in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-10#section-2.1" class="relref">Section 2.1</a> of [<a href="#AUTHSCHEME" class="cite xref">AUTHSCHEME</a>]</span><a href="#section-8.2-2.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.5">Publicly Verifiable: Y<a href="#section-8.2-2.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.6">Public Metadata: Y<a href="#section-8.2-2.6" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.7">Private Metadata: N<a href="#section-8.2-2.7" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.8">Nk: 256<a href="#section-8.2-2.8" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.9">Nid: 32<a href="#section-8.2-2.9" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.10">Notes: The RSABSSA-SHA384-PSS-Deterministic and
+RSABSSA-SHA384-PSSZERO-Deterministic variants are supported<a href="#section-8.2-2.10" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+</div>
+</section>
+</div>
+<section id="section-9">
+      <h2 id="name-references">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-9.1">
         <h3 id="name-normative-references">
-<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="AUTHSCHEME">[AUTHSCHEME]</dt>
         <dd>
-<span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"The Privacy Pass HTTP Authentication Scheme"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-auth-scheme-09</span>, <time datetime="2023-03-06" class="refDate">6 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-09">https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-09</a>&gt;</span>. </dd>
+<span class="refAuthor">Pauly, T.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"The Privacy Pass HTTP Authentication Scheme"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-auth-scheme-10</span>, <time datetime="2023-05-08" class="refDate">8 May 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-10">https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-auth-scheme-10</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="PBLINDRSA">[PBLINDRSA]</dt>
+<dt id="BASIC-PROTOCOL">[BASIC-PROTOCOL]</dt>
+        <dd>
+<span class="refAuthor">Celi, S.</span>, <span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Faz-Hernandez, A.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Privacy Pass Issuance Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-protocol-10</span>, <time datetime="2023-03-06" class="refDate">6 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10">https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="PBRSA">[PBRSA]</dt>
         <dd>
 <span class="refAuthor">Amjad, G. A.</span>, <span class="refAuthor">Hendrickson, S.</span>, <span class="refAuthor">Wood, C. A.</span>, and <span class="refAuthor">K. W. L. Yeo</span>, <span class="refTitle">"Partially Blind RSA Signatures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-amjad-cfrg-partially-blind-rsa-00</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00">https://datatracker.ietf.org/doc/html/draft-amjad-cfrg-partially-blind-rsa-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="PROTOCOL">[PROTOCOL]</dt>
+<dt id="POPRF">[POPRF]</dt>
         <dd>
-<span class="refAuthor">Celi, S.</span>, <span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Faz-Hernandez, A.</span>, <span class="refAuthor">Valdez, S.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Privacy Pass Issuance Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-protocol-10</span>, <time datetime="2023-03-06" class="refDate">6 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10">https://datatracker.ietf.org/doc/html/draft-ietf-privacypass-protocol-10</a>&gt;</span>. </dd>
+<span class="refAuthor">Davidson, A.</span>, <span class="refAuthor">Faz-Hernandez, A.</span>, <span class="refAuthor">Sullivan, N.</span>, and <span class="refAuthor">C. A. Wood</span>, <span class="refTitle">"Oblivious Pseudorandom Functions (OPRFs) using Prime-Order Groups"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-voprf-21</span>, <time datetime="2023-02-21" class="refDate">21 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-voprf-21</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -1579,14 +1905,18 @@ RSABSSA-SHA384-PSSZERO-Deterministic variants are supported<a href="#section-7-2
 <span class="refAuthor">Moriarty, K., Ed.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Jonsson, J.</span>, and <span class="refAuthor">A. Rusch</span>, <span class="refTitle">"PKCS #1: RSA Cryptography Specifications Version 2.2"</span>, <span class="seriesInfo">RFC 8017</span>, <span class="seriesInfo">DOI 10.17487/RFC8017</span>, <time datetime="2016-11" class="refDate">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8017">https://www.rfc-editor.org/rfc/rfc8017</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TOKEN-EXTENSION">[TOKEN-EXTENSION]</dt>
+      <dd>
+<span class="refTitle">"The PrivateToken HTTP Authentication Scheme Extensions Parameter"</span>, <span>n.d.</span>, <span>&lt;<a href="https://chris-wood.github.io/draft-wood-privacypass-extensible-token/draft-wood-privacypass-extensible-token.html">https://chris-wood.github.io/draft-wood-privacypass-extensible-token/draft-wood-privacypass-extensible-token.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
-<section id="section-8.2">
+<section id="section-9.2">
         <h3 id="name-informative-references">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="DSS">[DSS]</dt>
@@ -1601,7 +1931,7 @@ RSABSSA-SHA384-PSSZERO-Deterministic variants are supported<a href="#section-7-2
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">This work benefited from input from Ghous Amjad and Kevin Yeo.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
