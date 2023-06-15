@@ -4,8 +4,9 @@
 
 Privacy Pass                                              S. Hendrickson
 Internet-Draft                                                    Google
-Intended status: Informational                              15 June 2023
-Expires: 17 December 2023
+Intended status: Informational                                C. A. Wood
+Expires: 17 December 2023                               Cloudflare, Inc.
+                                                            15 June 2023
 
 
                         Public Metadata Issuance
@@ -94,7 +95,7 @@ Table of Contents
      9.1.  Normative References
      9.2.  Informative References
    Acknowledgments
-   Author's Address
+   Authors' Addresses
 
 1.  Introduction
 
@@ -735,8 +736,13 @@ Acknowledgments
 
    This work benefited from input from Ghous Amjad and Kevin Yeo.
 
-Author's Address
+Authors' Addresses
 
    Scott Hendrickson
    Google
    Email: scott@shendrickson.com
+
+
+   Christopher A. Wood
+   Cloudflare, Inc.
+   Email: caw@heapingbits.net
